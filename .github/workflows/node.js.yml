@@ -1,0 +1,46 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+      with: 
+        ref: dev
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install npm and hexo
+      run: |
+        npm install
+        npm install hexo-cli -g
+    - name: Install SSH key
+      env:
+          HEXO_DEPLOY_PRI: ${{secrets.SSH_PRI}}
+      run: |
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        mkdir -p ~/.ssh/
+        echo "$HEXO_DEPLOY_PRI" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - name: Deploy blog
+      run: |
+        hexo g
+        hexo d
