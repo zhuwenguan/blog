@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   build:
@@ -21,8 +21,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with: 
-        ref: dev
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
