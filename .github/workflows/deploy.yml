@@ -1,0 +1,39 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install npm and hexo
+      run: |
+        npm install
+        npm install hexo-cli -g
+    - name: Prepare Github identity
+      env:
+          HEXO_DEPLOY_PRI: ${{secrets.SSH_PRI}}
+      run: |
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        mkdir -p ~/.ssh/
+        echo "$HEXO_DEPLOY_PRI" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        git config --global user.name zhuwenguan
+        git config --global user.email 170981799@qq.com
+    - name: Deploy blog
+      run: |
+        hexo g
+        hexo d
