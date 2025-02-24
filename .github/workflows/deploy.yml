@@ -18,11 +18,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install npm and hexo
+    - name: Install npm
       run: |
         npm install
-        npm install hexo-cli -g
-    - name: Prepare Github identity
+    - name: Prepare Github Identity
       env:
           HEXO_DEPLOY_PRI: ${{secrets.SSH_PRI}}
       run: |
@@ -33,7 +32,7 @@ jobs:
         ssh-keyscan github.com >> ~/.ssh/known_hosts
         git config --global user.name zhuwenguan
         git config --global user.email 170981799@qq.com
-    - name: Deploy blog
+    - name: Deploy Blog
       run: |
-        hexo g
-        hexo d
+        npm run build
+        npm run deploy
