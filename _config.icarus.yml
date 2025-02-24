@@ -232,12 +232,6 @@ widgets:
         author_title: human
         # Author's current location
         location: Earth
-        # URL or path to the avatar image
-        avatar: 
-        # Whether show the rounded avatar image
-        avatar_rounded: false
-        # Email address for the Gravatar
-        gravatar: 
     # Table of contents widget configurations
     -
         # Where should the widget be placed, left sidebar or right sidebar
