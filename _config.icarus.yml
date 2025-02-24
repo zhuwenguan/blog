@@ -6,8 +6,6 @@ variant: default
 logo: /img/logo.svg
 # Page metadata configurations
 head:
-    # URL or path to the website's icon
-    favicon: /img/favicon.svg
     # Web application manifests configuration
     # https://developer.mozilla.org/en-US/docs/Web/Manifest
     manifest:
@@ -134,6 +132,8 @@ article:
     highlight:
         # Code highlight themes
         # https://github.com/highlightjs/highlight.js/tree/master/src/styles
+        enable: true
+        autodetect: true
         theme: atom-one-light
         # Show copy code button
         clipboard: true
