@@ -14,13 +14,13 @@ jobs:
     strategy:
       matrix:
         node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
     - name: Install npm
       run: |
         npm install
+        npm install hexo-cli -g
         npm install hexo-asset-img --save
     - name: Prepare Github Identity
       env:
@@ -35,5 +35,4 @@ jobs:
         git config --global user.email 170981799@qq.com
     - name: Deploy Blog
       run: |
-        npm run build
-        npm run deploy
+        hexo g&&hexo d
