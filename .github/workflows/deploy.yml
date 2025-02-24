@@ -20,7 +20,6 @@ jobs:
     - name: Install npm
       run: |
         npm install
-        npm install hexo-cli -g
         npm install hexo-asset-img --save
     - name: Prepare Github Identity
       env:
@@ -35,4 +34,5 @@ jobs:
         git config --global user.email 170981799@qq.com
     - name: Deploy Blog
       run: |
-        hexo g&&hexo d
+        npm run build
+        npm run deploy
