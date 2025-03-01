@@ -133,7 +133,7 @@ article:
         # Code highlight themes
         # https://github.com/highlightjs/highlight.js/tree/master/src/styles
         enable: true
-        autodetect: true
+        autodetect: false
         theme: atom-one-light
         # Show copy code button
         clipboard: true
