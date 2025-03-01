@@ -3,7 +3,8 @@ version: 5.1.0
 # Icarus theme variant, can be "default" or "cyberpunk"
 variant: default
 # Path or URL to the website's logo
-logo: /img/logo.svg
+logo: 
+    text: Zhu's Blog Site
 # Page metadata configurations
 head:
     # Web application manifests configuration
