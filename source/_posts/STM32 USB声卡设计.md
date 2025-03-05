@@ -36,6 +36,9 @@ MCU和DAC数字电源使用一个ME6211产生3.3V，没有什么可说的。
 CS4398这款DAC需要I2S提供MCLK信号作为其工作的主时钟。但是STM32的I2S接口如果输出MCLK的话，时钟精度就会下降。例如，I2S设置48kHz的采样率，实际上，由于时钟误差，他的采样率是47.991kHz。这个采样率直接决定了I2S输出数据的速度。所以，这个采样率误差会导致I2S发送数据慢了9Hz。假设USB以48.000kHz输出数据，那么I2S就发不完USB传来的数据，最终会导致缓冲区溢出。所以，最好的办法是给STM32的I2S提供一个专用时钟，比如使用24.576MHz的晶振。在我的设计中，没有采用这个方案，仍然是8MHz晶振通过PLL产生I2S MCLK。通过算法解决缓冲区溢出的问题。
 #### 电源
 电源电路的设计使用了0欧电阻隔离数字地和模拟地，用磁珠隔离VBUS和+5V，减少+5V的噪声。由于DAC需要+5V作为模拟供电，最简单的办法就是从VBUS获取，但是VBUS耦合了电脑的噪声，因此需要对其进行滤波。也可以采用升压+LDO的方式，但是显然会增加系统复杂度，这次就不考虑了。
+#### 原理图
+![原理图 第1页](<STM32 USB声卡设计/image.png>)
+![原理图 第2页](<STM32 USB声卡设计/image-1.png>)
 ## 软件开发
 软件主要使用STM32CubeMX生成。其设置如下。
 配置的时候需要把Middleware里面的`USB DEVICE CLASS`启用，选择`USB Audio Class`。PID和VID可以根据需要修改，设备名也可以自定义。这里我给设备起名叫做`STM32 Audio Card`。
@@ -74,7 +77,69 @@ void HAL_I2S_TxTransferCpltCallback(I2S_HandleTypeDef *hi2s)
 }
 ```
 此外，需要通过I2C接口对CS4398进行操作。根据数据手册，编写CS4398的驱动代码如下。
+```c
+void CS4398_Write(uint8_t reg, uint8_t data)
+{
+		extern I2C_HandleTypeDef hi2c1;
+    uint8_t txData[2] = {reg, data};
+		
+    HAL_I2C_Master_Transmit(&hi2c1, CS4398_ADDR, txData, 2, 100);   
+}
+
+/*
+ * @brief   Initialize the CS4398
+ * @param   None
+ * @retval  None
+ * @note    By calling this function, the CS4398 is enabled and the volume is set to minimum
+ */
+void CS4398_Init(void)
+{
+    CS4398_Write(0x09, 0xC0); // Enable Control Interface
+		HAL_Delay(1);
+    CS4398_Write(0x03, 0x89); // Equal A and B volume
+		HAL_Delay(1);
+    CS4398_Write(0x05, 255); // Set volume to minimum
+		HAL_Delay(1);
+    CS4398_Write(0x07, 0xB0); // Set soft ramp mode
+}
+
+/*
+ * @brief   Set the volume of the CS4398
+ * @param   volume: 0x00 to 0xFF
+ * @retval  None
+ * @note    0x00 is the maximum volume, 0xFF is the minimum volume
+ *          The volume is set to both channels
+ */
+void CS4398_SetVolume(uint8_t volume)
+{
+    CS4398_Write(0x05, volume);
+}
+
+/*
+ * @brief   Mute the CS4398
+ * @param   None
+ * @retval  None
+ * @note    CS4398 is muted in hardware
+ */
+void CS4398_Mute(void)
+{
+    CS4398_Write(0x04, 0x18);
+}
+
+/*
+ * @brief   Unmute the CS4398
+ * @param   None
+ * @retval  None
+ * @note    CS4398 is unmuted in hardware
+ */
+void CS4398_Unmute(void)
+{
+    CS4398_Write(0x04, 0x00);
+}
+```
 ## 调试
+### 焊接效果
+
 ### 硬件调试
 1. 上电测试
 	万用表测试+5V和GND没有短路之后，使用可调电源给板子提供5V工作电压。观察到电流0.02A，3.3V、+4.2V、-4.2V均正常输出。
