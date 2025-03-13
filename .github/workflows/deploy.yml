@@ -34,5 +34,5 @@ jobs:
         git config --global user.email 170981799@qq.com
     - name: Deploy Blog
       run: |
-        npm run build
+        npm run build:add
         npm run deploy
