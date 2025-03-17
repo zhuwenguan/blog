@@ -11,10 +11,14 @@
             "id": "f160b20289fc81ba",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "source/_posts/全志H3掌上电脑——项目简介.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "全志H3掌上电脑——项目简介"
             }
           }
         ]
@@ -94,7 +98,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "大创——多传感器融合的供水管网监测系统——项目简介.md",
+            "file": "Untitled.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -151,6 +155,7 @@
   },
   "active": "f160b20289fc81ba",
   "lastOpenFiles": [
+    "source/_posts/全志H3掌上电脑——项目简介.md",
     "source/_posts/STM32 USB声卡设计.md",
     "source/_posts/大创——多传感器融合的供水管网监测系统——项目简介.md",
     "scaffolds/post.md"
