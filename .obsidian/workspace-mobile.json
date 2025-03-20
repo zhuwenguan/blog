@@ -11,10 +11,14 @@
             "id": "15e4a59c398a66d1",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "source/_posts/全志H3原理图设计——USB篇.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "全志H3原理图设计——USB篇"
             }
           }
         ]
@@ -94,6 +98,7 @@
         "state": {
           "type": "backlink",
           "state": {
+            "file": "source/_posts/全志H3原理图设计——USB篇.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
