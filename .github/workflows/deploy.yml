@@ -19,8 +19,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install npm and hexo
       run: |
-        npm install hexo-cli -g
-        npm install hexo-asset-img --save
+        npm install
+        npm install hexo-image-link --save
     - name: Prepare Github Identity
       env:
           HEXO_DEPLOY_PRI: ${{secrets.SSH_PRI}}
@@ -34,4 +34,5 @@ jobs:
         git config --global user.email 170981799@qq.com
     - name: Deploy Blog
       run: |
-        hexo g && hexo d
+        npm run build
+        npm run deploy
