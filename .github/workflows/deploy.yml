@@ -20,7 +20,6 @@ jobs:
     - name: Install npm and hexo
       run: |
         npm install
-        npm install hexo-image-link --save
     - name: Prepare Github Identity
       env:
           HEXO_DEPLOY_PRI: ${{secrets.SSH_PRI}}
