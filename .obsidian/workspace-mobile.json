@@ -11,10 +11,14 @@
             "id": "48833274fe5ded71",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "source/_posts/STM32H7电赛开发板硬件设计.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "STM32H7电赛开发板硬件设计"
             }
           }
         ]
@@ -94,6 +98,7 @@
         "state": {
           "type": "backlink",
           "state": {
+            "file": "STM32H7电赛开发板硬件设计.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -150,6 +155,7 @@
   },
   "active": "48833274fe5ded71",
   "lastOpenFiles": [
+    "source/_posts/STM32H7电赛开发板硬件设计.md",
     "source/_posts/蓝桥杯单片机编程技巧.md",
     "source/_posts/基于ESP32-S3的音频开发板设计.md",
     "source/_posts/全志H3原理图设计——USB篇.md",
