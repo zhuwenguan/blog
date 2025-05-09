@@ -20,8 +20,23 @@
               "icon": "lucide-file",
               "title": "STM32H7电赛开发板硬件设计"
             }
+          },
+          {
+            "id": "1ef1a09d818810e5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "source/_posts/MAX30100心率检测算法.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "MAX30100心率检测算法"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -98,7 +113,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "STM32H7电赛开发板硬件设计.md",
+            "file": "MAX30100心率检测算法.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -153,9 +168,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "48833274fe5ded71",
+  "active": "1ef1a09d818810e5",
   "lastOpenFiles": [
     "source/_posts/STM32H7电赛开发板硬件设计.md",
+    "source/_posts/MAX30100心率检测算法.md",
     "source/_posts/蓝桥杯单片机编程技巧.md",
     "source/_posts/基于ESP32-S3的音频开发板设计.md",
     "source/_posts/全志H3原理图设计——USB篇.md",
