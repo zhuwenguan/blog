@@ -4,6 +4,7 @@ toc: true
 date: 2025-02-25 20:51:08
 categories: 嵌入式
 tags:
+    - ESP32
 ---
 
 ## 前言

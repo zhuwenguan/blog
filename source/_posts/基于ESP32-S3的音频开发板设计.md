@@ -5,7 +5,6 @@ date: 2025-04-12 21:14:56
 categories: 硬件
 tags:
     - ESP32
-    - 硬件
     - 原理图
     - PCB
 ---

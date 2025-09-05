@@ -2,8 +2,11 @@
 title: STM32 USB声卡设计
 date: 2025.3.1 18:23:32
 toc: true
-categories: 项目
+categories: 嵌入式
 tags:
+	- STM32
+	- USB
+	- 音频
 ---
 ## 前言
 根据我日常使用的需求，需要设计一款Type-C连接的外置USB声卡，用于播放声音。本质上就是把USB Audio协议的数字音频信号转换成模拟信号，并从3.5mm耳机孔输出。本文将详细介绍这款USB声卡的设计、调试过程，为之后的开发积累经验。
