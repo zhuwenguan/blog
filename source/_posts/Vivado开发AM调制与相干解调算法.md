@@ -84,27 +84,59 @@ s_{demod}(t)&=\sqrt{I^2(t)+Q^2(t)}\notag\\
 &=\sqrt{2s^2(t)+\frac{1}{2}+\frac{1}{2}\cos(2\omega_3+2\phi_3)}
 \end{align}
 $$
-到这里，其实就能看出一些东西了首先，$s_{demod}(t)\approx\sqrt{2}s(t)$，也就是说，不考虑直流分量和$\omega_3$分量，解调到这里就成功了。那也就是说，如果对该信号进行低通滤波和去直流处理，就能够还原出基带信号。这就是IQ解调的基本原理。其推导过程还是比较复杂的，但是可以看出，借助一个第三频率，可以去除掉原来的载波分量，保留基波分量。这对相干解调的硬件实现具有很重要的意义，相干解调不再需要获得与发射机同频同相的载波，对接收机的要求降低了很多。
+到这里，其实就能看出一些东西了。首先，$s_{demod}(t)\approx\sqrt{2}s(t)$，也就是说，不考虑直流分量和$\omega_3$分量，解调到这里就成功了。那也就是说，如果对该信号进行低通滤波和去直流处理，就能够还原出基带信号。这就是IQ解调的基本原理。其推导过程还是比较复杂的，但是可以看出，借助一个第三频率，可以去除掉原来的载波分量，保留基波分量。这对相干解调的硬件实现具有很重要的意义，相干解调不再需要获得与发射机同频同相的载波，对接收机的要求降低了很多。
 
 ## Vivado搭建AM调制系统
 从这里开始就没有什么技术含量了。我为了少写代码，基本上全都在用IP核，整个系统的搭建过程，就像在Simulink里面拿模块搭建一样。
+![](Vivado开发AM调制与相干解调算法/image-5.png)
 ### DDS系统
 直接调用了Vivado的DDS Compiler这一IP核。相关设置如下。
-
-
-需要注意的是，DDS Compiler有两种设置模式，分别叫System Requirements和Hardware Requirements。在System Requirement模式下，用户输入的是动态范围、频率分辨率等需求参数，这些参数决定了DDS的外在表现，系统会根据这些需求自动计算出能够满足需求的DDS硬件参数。Hardware Requirements模式下，用户输入的是相位寄存器位宽、输出位宽等硬件参数，系统会计算出该参数下DDS的外在表现，显示在Summary页中。这两种DDS设置模式，可以适应不同系统的不同需求。
+![](Vivado开发AM调制与相干解调算法/image-7.png)
+![](Vivado开发AM调制与相干解调算法/image-8.png)
+需要注意的是，DDS Compiler有两种设置模式，分别叫System Parameters和Hardware Parameters。在System Parameters模式下，用户输入的是动态范围、频率分辨率等需求参数，这些参数决定了DDS的外在表现，系统会根据这些需求自动计算出能够满足需求的DDS硬件参数。Hardware Parameters模式下，用户输入的是相位寄存器位宽、输出位宽等硬件参数，系统会计算出该参数下DDS的外在表现，显示在Summary页中。这两种DDS设置模式，可以适应不同系统的不同需求。
 
 ### 幅度调整
 考虑到FPGA内部对浮点数的计算，并没有明显的优势，最好还是用整数运算实现整个系统。为了调节AM调制的调制度，又必须以小数比例调整幅度，例如本来255的峰峰值，为了实现0.3的调制度，必须用255×0.3=76.5的峰峰值。为了实现这个效果，我把基带信号先乘以33，再除以100，间接实现了小数乘法运算，也就实现了近似于0.3的调制比。
-
+![](Vivado开发AM调制与相干解调算法/image-12.png)
 ## AM解调系统搭建
 
 系统按照前文的系统框图搭建即可。不再赘述。
+
+IQ求模运算，稍微写了一点Verilog代码，如下：
+```verilog
+module vector_norm(
+    input clk,
+    input signed [23:0] vec1,
+    input signed [23:0] vec2,
+    output [24:0] norm
+    );
+    
+    reg signed [47:0]  out_reg;
+    
+    always @(posedge clk) begin
+        out_reg <= vec1 * vec1 + vec2 * vec2;
+    end
+    
+    cordic_0 u_cordic (
+        .aclk                (clk),
+        .s_axis_cartesian_tvalid(1'b1),          // 输入始终有效
+        .s_axis_cartesian_tdata(out_reg),         // 输入数据
+        .m_axis_dout_tdata   (norm)
+    );
+    
+endmodule
+```
 记录一下FIR滤波器的设计。首先，FIR滤波器并没有内置分频器，Implementation Details里面的Input Frequency和Clock Frequency并不会直接改变clk的频率。例如，100MHz的系统里面，如果FIR想要以1MHz运行，必须把时钟一百分频之后输入FIR模块，单纯在FIR内部输入一个1MHz的Clock Frequency是不能让其正常工作的。Clock Frequency和Input Frequency我并没有搞明白他们的关系，按照网上的说法，二者必须相等，FIR才能运行。这一点在我的实验过程中得到了一定的验证，姑且认为必须这样吧。
-其次，MATLAB滤波器想要生成coe文件，必须在左下角第二个按钮点开的页面里面，把系数格式从浮点数改为定点数。如下图所示。
+![](Vivado开发AM调制与相干解调算法/image-13.png)
+其次，MATLAB滤波器想要生成coe文件，必须在左下角第三个按钮点开的页面里面，把系数格式从浮点数改为定点数。如下图所示。
+![](Vivado开发AM调制与相干解调算法/image-14.png)
 
 ## 系统仿真验证
 AM调制波形如下：
-
+70%调制度
+![](Vivado开发AM调制与相干解调算法/image-11.png)
+100%调制度
+![](Vivado开发AM调制与相干解调算法/image-6.png)
 
 AM解调波形如下：
+![](Vivado开发AM调制与相干解调算法/image-10.png)
