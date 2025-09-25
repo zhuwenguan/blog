@@ -46,43 +46,43 @@ IQ正交解调的结构框图如下：
 设基带信号频率为$\omega_1$，载波频率为$\omega_2$，本振频率（解调时用的频率）为$\omega_3$
 先求I分量
 $$
-\begin{align}
+\begin{aligned}
 I(t)&=m(t)*\cos(\omega_3t+\phi_3)\notag\\
 &=s(t)*\cos(\omega_2t+\phi_2)*\cos(\omega_3t+\phi_3)\notag\\
-\end{align}
+\end{aligned}
 $$
 应用积化和差公式：
 $$
-\begin{align}
+\begin{aligned}
 I(t)&=s(t)*\frac{1}{2}[\cos((\omega_2+\omega_3)t+(\phi_2+\phi_3))+\cos((\omega_2-\omega_3)t+(\phi_2-\phi_3))]\notag\\
-\end{align}
+\end{aligned}
 $$
 同理可求得Q分量
 $$
-\begin{align}
+\begin{aligned}
 Q(t)&=s(t)*\frac{1}{2}[\sin((\omega_2+\omega_3)t+(\phi_2+\phi_3))+\sin((\omega_2-\omega_3)t+(\phi_2-\phi_3))]\notag\\
-\end{align}
+\end{aligned}
 $$
 
 > 附：积化和差公式
 > $$
-> \begin{align}
+> \begin{aligned}
 > \cos A \cos B &= \frac{1}{2} \big[\cos(A+B) + \cos(A-B)\big] \notag\\
 > \sin A \sin B &= \frac{1}{2} \big[\cos(A-B) - \cos(A+B)\big] \notag\\
 > \sin A \cos B &= \frac{1}{2} \big[\sin(A+B) + \sin(A-B)\big] \notag
-> \end{align}
+> \end{aligned}
 > $$
 
 暂时不考虑低通滤波，我把低通滤波放到了IQ求模之后。
 令$\cos(A)=\cos((\omega_2+\omega_3)t+(\phi_2+\phi_3))$，$\cos(B)=\cos((\omega_2-\omega_3)t+(\phi_2-\phi_3))$，$\sin$与之同理。方便接下来的推导。
 还原信号：
 $$
-\begin{align}
+\begin{aligned}
 s_{demod}(t)&=\sqrt{I^2(t)+Q^2(t)}\notag\\
 &=\sqrt{2s^2(t)+\frac{1}{4}(\cos^2(A)+\sin^2(A))+\frac{1}{4}(\cos^2(B)+\sin^2(B))+\frac{1}{2}cos(A)cos(B)+\frac{1}{2}sin(A)sin(B)}\notag\\
 &=\sqrt{2s^2(t)+\frac{1}{4}(\cos^2(A)+\sin^2(A))+\frac{1}{4}(\cos^2(B)+\sin^2(B))+\frac{1}{2}\cos(A-B)}\notag\\
 &=\sqrt{2s^2(t)+\frac{1}{2}+\frac{1}{2}\cos(2\omega_3+2\phi_3)}
-\end{align}
+\end{aligned}
 $$
 到这里，其实就能看出一些东西了。首先，$s_{demod}(t)\approx\sqrt{2}s(t)$，也就是说，不考虑直流分量和$\omega_3$分量，解调到这里就成功了。那也就是说，如果对该信号进行低通滤波和去直流处理，就能够还原出基带信号。这就是IQ解调的基本原理。其推导过程还是比较复杂的，但是可以看出，借助一个第三频率，可以去除掉原来的载波分量，保留基波分量。这对相干解调的硬件实现具有很重要的意义，相干解调不再需要获得与发射机同频同相的载波，对接收机的要求降低了很多。
 
