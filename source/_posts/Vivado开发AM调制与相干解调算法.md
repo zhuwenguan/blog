@@ -54,22 +54,22 @@ $$
 应用积化和差公式：
 $$
 \begin{aligned}
-I(t)&=s(t)*\frac{1}{2}[\cos((\omega_2+\omega_3)t+(\phi_2+\phi_3))+\cos((\omega_2-\omega_3)t+(\phi_2-\phi_3))]\notag\\
+I(t)&=s(t)*\frac{1}{2}[\cos((\omega_2+\omega_3)t+(\phi_2+\phi_3))+\cos((\omega_2-\omega_3)t+(\phi_2-\phi_3))]\\
 \end{aligned}
 $$
 同理可求得Q分量
 $$
 \begin{aligned}
-Q(t)&=s(t)*\frac{1}{2}[\sin((\omega_2+\omega_3)t+(\phi_2+\phi_3))+\sin((\omega_2-\omega_3)t+(\phi_2-\phi_3))]\notag\\
+Q(t)&=s(t)*\frac{1}{2}[\sin((\omega_2+\omega_3)t+(\phi_2+\phi_3))+\sin((\omega_2-\omega_3)t+(\phi_2-\phi_3))]\\
 \end{aligned}
 $$
 
 > 附：积化和差公式
 > $$
 > \begin{aligned}
-> \cos A \cos B &= \frac{1}{2} \big[\cos(A+B) + \cos(A-B)\big] \notag\\
-> \sin A \sin B &= \frac{1}{2} \big[\cos(A-B) - \cos(A+B)\big] \notag\\
-> \sin A \cos B &= \frac{1}{2} \big[\sin(A+B) + \sin(A-B)\big] \notag
+> \cos A \cos B &= \frac{1}{2} \big[\cos(A+B) + \cos(A-B)\big] \\
+> \sin A \sin B &= \frac{1}{2} \big[\cos(A-B) - \cos(A+B)\big] \\
+> \sin A \cos B &= \frac{1}{2} \big[\sin(A+B) + \sin(A-B)\big] 
 > \end{aligned}
 > $$
 
@@ -78,9 +78,9 @@ $$
 还原信号：
 $$
 \begin{aligned}
-s_{demod}(t)&=\sqrt{I^2(t)+Q^2(t)}\notag\\
-&=\sqrt{2s^2(t)+\frac{1}{4}(\cos^2(A)+\sin^2(A))+\frac{1}{4}(\cos^2(B)+\sin^2(B))+\frac{1}{2}cos(A)cos(B)+\frac{1}{2}sin(A)sin(B)}\notag\\
-&=\sqrt{2s^2(t)+\frac{1}{4}(\cos^2(A)+\sin^2(A))+\frac{1}{4}(\cos^2(B)+\sin^2(B))+\frac{1}{2}\cos(A-B)}\notag\\
+s_{demod}(t)&=\sqrt{I^2(t)+Q^2(t)}\\
+&=\sqrt{2s^2(t)+\frac{1}{4}(\cos^2(A)+\sin^2(A))+\frac{1}{4}(\cos^2(B)+\sin^2(B))+\frac{1}{2}cos(A)cos(B)+\frac{1}{2}sin(A)sin(B)}\\
+&=\sqrt{2s^2(t)+\frac{1}{4}(\cos^2(A)+\sin^2(A))+\frac{1}{4}(\cos^2(B)+\sin^2(B))+\frac{1}{2}\cos(A-B)}\\
 &=\sqrt{2s^2(t)+\frac{1}{2}+\frac{1}{2}\cos(2\omega_3+2\phi_3)}
 \end{aligned}
 $$
