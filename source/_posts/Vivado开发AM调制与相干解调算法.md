@@ -47,8 +47,8 @@ IQ正交解调的结构框图如下：
 先求I分量
 $$
 \begin{aligned}
-I(t)&=m(t)*\cos(\omega_3t+\phi_3)\notag\\
-&=s(t)*\cos(\omega_2t+\phi_2)*\cos(\omega_3t+\phi_3)\notag\\
+I(t)&=m(t)*\cos(\omega_3t+\phi_3)\\
+&=s(t)*\cos(\omega_2t+\phi_2)*\cos(\omega_3t+\phi_3)\\
 \end{aligned}
 $$
 应用积化和差公式：
