@@ -4,6 +4,7 @@ toc: true
 date: 2025-06-02 15:09:44
 categories:
     - Verilog
+    - 仿真
 tags:
     - Verilog
 ---
