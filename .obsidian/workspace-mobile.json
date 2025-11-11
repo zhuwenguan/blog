@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "source/_posts/微机原理课程笔记.md",
+                "file": "source/_posts/u8g2 mui进阶使用方法.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "微机原理课程笔记"
+              "title": "u8g2 mui进阶使用方法"
             }
           }
         ]
@@ -98,7 +98,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "source/_posts/微机原理课程笔记.md",
+            "file": "source/_posts/u8g2 mui进阶使用方法.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -153,15 +153,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "795f117891aa27ee",
+  "active": "0a918784e47a8b41",
   "lastOpenFiles": [
+    "source/_posts/STM32 USB声卡设计.md",
+    "source/_posts/u8g2 mui进阶使用方法.md",
+    "source/_posts/微机原理课程笔记.md",
     "source/_posts/微机原理课程笔记/5c5a73e8bf7ce8a064eeb2799d87a223.png",
     "source/_posts/微机原理课程笔记/1986811-20200501152838013-349893447.png",
     "source/_posts/微机原理课程笔记/Screenshot_2025-11-03-08-23-52-778_com.microsoft.emmx.png",
     "source/_posts/微机原理课程笔记",
-    "source/_posts/微机原理课程笔记.md",
     "source/_posts/Vivado开发AM调制与相干解调算法.md",
-    "source/_posts/u8g2 mui进阶使用方法.md",
     "source/_posts/25电赛A题满分方案解析.md",
     "source/_posts/CarSim仿真基础.md",
     "source/_posts/STM32H7电赛开发板硬件设计.md",
@@ -173,7 +174,6 @@
     "source/_posts/全志H3原理图设计——DDR篇.md",
     "source/_posts/全志H3原理图设计——HDMI篇.md",
     "README.md",
-    "source/_posts/STM32 USB声卡设计.md",
     "source/_posts/大创——多传感器融合的供水管网监测系统——项目简介.md",
     "scaffolds/post.md"
   ]
