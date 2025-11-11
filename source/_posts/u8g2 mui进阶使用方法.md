@@ -1,6 +1,6 @@
 ---
 title: u8g2 mui进阶使用方法
-date: 2025.10.15 23:59:59
+date: 2025.10.15 13:24:53
 toc: true
 categories: 
 tags: []
@@ -150,7 +150,7 @@ fds_t fds_data[] =
 typedef struct {
 	char str[32];
 	node_t *next;
-} node_t
+} node_t;
 
 extern node_t *head;
 
