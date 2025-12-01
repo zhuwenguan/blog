@@ -3,7 +3,12 @@ title: 基于CarSim的方程式赛车TCS算法开发
 toc: true
 date: 2025-09-11 16:05:32
 categories:
+   - 赛车
 tags:
+   - CarSim
+   - TCS
+   - Simulink
+   - 仿真
 ---
 
 FSEC——中国大学生电动方程式大赛是一个全国性的大学生汽车赛事，参赛队伍自主设计、制造一台方程式赛车参加比赛。这里介绍一下我所隶属的车队共同开发的TCS——牵引力控制算法。
