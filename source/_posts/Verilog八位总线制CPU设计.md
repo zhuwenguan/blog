@@ -3,10 +3,9 @@ title: Verilog八位总线制CPU设计
 toc: true
 date: 2025-06-02 15:09:44
 categories:
-    - Verilog
-    - 仿真
+    - Verilog  
 tags:
-    - Verilog
+    - 仿真
 ---
 
 ## 前言

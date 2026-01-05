@@ -3,12 +3,11 @@ title: Vivado开发AM调制与相干解调算法
 toc: true
 date: 2025-09-16 20:57:21
 categories:
-    - Verilog
     - 课业
-    - 仿真
 tags:
     - Verilog
     - Vivado
+    - 仿真
 ---
 
 这是一个学校安排的课设任务，要求是用Vivado实现DDS、AM调制、AM相干解调三部分功能。在这里记录一下有关AM调制解调的原理、思路和实现。
