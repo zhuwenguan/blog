@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "source/_posts/u8g2 mui进阶使用方法.md",
-                "mode": "source",
+                "file": "source/_posts/答辩准备.md",
+                "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "u8g2 mui进阶使用方法"
+              "title": "答辩准备"
             }
           }
         ]
@@ -98,7 +98,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "source/_posts/u8g2 mui进阶使用方法.md",
+            "file": "source/_posts/答辩准备.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -153,10 +153,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0a918784e47a8b41",
+  "active": "795f117891aa27ee",
   "lastOpenFiles": [
-    "source/_posts/STM32 USB声卡设计.md",
     "source/_posts/u8g2 mui进阶使用方法.md",
+    "source/_posts/答辩准备.md",
+    "source/_posts/答辩准备/mmexport1763302791795.jpg",
+    "mmexport1763302791795.jpg",
+    "source/_posts/STM32 USB声卡设计.md",
     "source/_posts/微机原理课程笔记.md",
     "source/_posts/微机原理课程笔记/5c5a73e8bf7ce8a064eeb2799d87a223.png",
     "source/_posts/微机原理课程笔记/1986811-20200501152838013-349893447.png",
