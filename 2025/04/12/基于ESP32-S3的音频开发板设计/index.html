@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>基于ESP32-S3的音频开发板设计 - Zhu Wenguan&#039;s Blog</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Zhu Wenguan"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Zhu Wenguan"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="前言 按照实验室老师的要求，针对电赛开发一系列开发板，供今年全国电赛的训练和比赛使用。目前主要考虑做音频和信号处理方向的题目。这块板子主要针对音频类题目，基于ESP32-S3，借助ESP32完善的音频生态系统，方便电赛音频题的开发。 本篇博文主要介绍这块开发板的原理图和PCB设计。"><meta property="og:type" content="blog"><meta property="og:title" content="基于ESP32-S3的音频开发板设计"><meta property="og:url" content="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/"><meta property="og:site_name" content="Zhu Wenguan&#039;s Blog"><meta property="og:description" content="前言 按照实验室老师的要求，针对电赛开发一系列开发板，供今年全国电赛的训练和比赛使用。目前主要考虑做音频和信号处理方向的题目。这块板子主要针对音频类题目，基于ESP32-S3，借助ESP32完善的音频生态系统，方便电赛音频题的开发。 本篇博文主要介绍这块开发板的原理图和PCB设计。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image.png"><meta property="og:image" content="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-3.png"><meta property="og:image" content="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-2.png"><meta property="og:image" content="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-2.png"><meta property="article:published_time" content="2025-04-12T13:14:56.000Z"><meta property="article:modified_time" content="2026-01-05T06:12:23.754Z"><meta property="article:author" content="Zhu Wenguan"><meta property="article:tag" content="原理图"><meta property="article:tag" content="PCB"><meta property="article:tag" content="ESP32"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/"},"headline":"基于ESP32-S3的音频开发板设计","image":["https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image.png","https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-3.png","https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-2.png","https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-2.png"],"datePublished":"2025-04-12T13:14:56.000Z","dateModified":"2026-01-05T06:12:23.754Z","author":{"@type":"Person","name":"Zhu Wenguan"},"publisher":{"@type":"Organization","name":"Zhu Wenguan's Blog","logo":{"@type":"ImageObject","url":{"text":"Zhu's Blog Site"}}},"description":"前言 按照实验室老师的要求，针对电赛开发一系列开发板，供今年全国电赛的训练和比赛使用。目前主要考虑做音频和信号处理方向的题目。这块板子主要针对音频类题目，基于ESP32-S3，借助ESP32完善的音频生态系统，方便电赛音频题的开发。 本篇博文主要介绍这块开发板的原理图和PCB设计。"}</script><link rel="canonical" href="https://zhuwenguan.github.io/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css"><link rel="stylesheet" href="https://fonts.loli.net/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.8.1/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdnjs.loli.net/ajax/libs/pace/1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Zhu&#039;s Blog Site</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">主页</a><a class="navbar-item" href="/blog/archives">归档</a><a class="navbar-item" href="/blog/categories">分类</a><a class="navbar-item" href="/blog/tags">标签</a><a class="navbar-item" href="/blog/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-04-12T13:14:56.000Z" title="4/12/2025, 9:14:56 PM">2025-04-12</time>发表</span><span class="level-item"><a class="link-muted" href="/blog/categories/%E7%A1%AC%E4%BB%B6/">硬件</a></span></div></div><h1 class="title is-3 is-size-4-mobile">基于ESP32-S3的音频开发板设计</h1><div class="content"><h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>按照实验室老师的要求，针对电赛开发一系列开发板，供今年全国电赛的训练和比赛使用。目前主要考虑做音频和信号处理方向的题目。这块板子主要针对音频类题目，基于ESP32-S3，借助ESP32完善的音频生态系统，方便电赛音频题的开发。<br />
+本篇博文主要介绍这块开发板的原理图和PCB设计。</p>
+<span id="more"></span>
+<h2 id="原理图设计"><a class="markdownIt-Anchor" href="#原理图设计"></a> 原理图设计</h2>
+<h3 id="esp32模组"><a class="markdownIt-Anchor" href="#esp32模组"></a> ESP32模组</h3>
+<p>考虑到ESP32模组自带PCB天线、外围电路的优良特性，还是采用模组作为主控，不直接使用芯片。</p>
+<img src="/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image.png" class="" title="ESP32-S3模组">
+<p>ESP32模组没什么值得讲的。主要是3V3的电源外部去耦电容和EN（RST）的阻容。按照芯片手册的描述，这两块电路最好完全按照推荐参数设计。</p>
+<h3 id="自动下载电路"><a class="markdownIt-Anchor" href="#自动下载电路"></a> 自动下载电路</h3>
+<p>自动下载电路本质上是一个USB转串口电路。了解这块电路之前，首先要明白ESP32的启动方式和烧录方式。</p>
+<h4 id="启动方式"><a class="markdownIt-Anchor" href="#启动方式"></a> 启动方式</h4>
+<p>ESP32的启动方式分为两大种，一种叫做Joint Download Boot模式，另一种叫做SPI Boot模式。我们常用的串口下载、USB下载等，都属于Joint Download Boot模式。而如果想让程序正常运行，就需要让ESP32以SPI Boot模式启动。启动模式与GPIO的关系如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">启动模式</th>
+<th style="text-align:center">GPIO0</th>
+<th style="text-align:center">GPIO46</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SPI Boot</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">x</td>
+</tr>
+<tr>
+<td style="text-align:center">Joint Download</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p>由于这两个管脚能够决定MCU的启动状态，他们有一个专门的名字，叫做Strapping管脚。<br />
+此外，GPIO0和GPIO46还具有上下拉电阻。它们的默认上下拉电阻如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">管脚</th>
+<th style="text-align:center">上下拉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">GPIO0</td>
+<td style="text-align:center">上拉</td>
+</tr>
+<tr>
+<td style="text-align:center">GPIO3</td>
+<td style="text-align:center">N/A</td>
+</tr>
+</tbody>
+</table>
+<p>由此可见，如果想让ESP32能够下载程序，需要把GPIO0拉低。<br />
+ESP32启动之后，这些引脚就与普通的IO口一样，可以被程序使用。</p>
+<h4 id="下载方式"><a class="markdownIt-Anchor" href="#下载方式"></a> 下载方式</h4>
+<p>首先，EN引脚跟其他MCU的RST引脚类似，如果拉低，则会终止MCU的运行，直到再次拉高之后，MCU重新开始运行。也就是说，MCU会重新检测Strapping管脚的状态，并根据Strapping管脚的组合决定启动方式。<br />
+那么，为了让ESP32下载程序，我们需要拉低EN，拉低GPIO0，然后再拉高EN，使得ESP32进入下载模式。总的来说，就是让EN拉高时，GPIO0处于低电平。</p>
+<img src="/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-3.png" class="" title="EN和GPIO0时序图">
+<p>ESP32官方开发板上的自动下载电路如图。</p>
+<img src="/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-2.png" class="" title="官方自动下载电路">
+<h4 id="modem联络信号"><a class="markdownIt-Anchor" href="#modem联络信号"></a> Modem联络信号</h4>
+<p>这一块值得单开一节，非常复杂。先回顾一下串口的一堆Modem联络信号</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">信号</th>
+<th style="text-align:center">方向</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CTS</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">Clear to Send</td>
+<td style="text-align:center">高表示允许本机发送</td>
+</tr>
+<tr>
+<td style="text-align:center">RTS</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">Request to Send</td>
+<td style="text-align:center">本机发送数据前拉高</td>
+</tr>
+<tr>
+<td style="text-align:center">DCD</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">Data Carrier Detect</td>
+<td style="text-align:center">高表示其他设备在线</td>
+</tr>
+<tr>
+<td style="text-align:center">DTR</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">Data Terminal Ready</td>
+<td style="text-align:center">本机可以通信时拉高</td>
+</tr>
+<tr>
+<td style="text-align:center">DSR</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">Data Set Ready</td>
+<td style="text-align:center">高表示其他设备准备好</td>
+</tr>
+</tbody>
+</table>
+<p>有点乱，不用怕，还有更乱的。这些信号都是针对电脑和Modem通信而言的，有主从之分，而我们用的是CH340之类的USB转串口，涉及的设备包括电脑、CH340、MCU，那到底哪个是终端，哪个是主机？于是乎，这个表格需要重新做一下。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">信号</th>
+<th style="text-align:center">方向</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CTS</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">高表示MCU允许芯片发送从电脑接收到的串口数据</td>
+</tr>
+<tr>
+<td style="text-align:center">RTS</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">芯片向MCU发送来自电脑的串口数据前拉高</td>
+</tr>
+<tr>
+<td style="text-align:center">DCD</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">芯片不会考虑终端存在与否，所以没什么用</td>
+</tr>
+<tr>
+<td style="text-align:center">DTR</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">芯片接收到来自电脑的串口数据后拉高</td>
+</tr>
+<tr>
+<td style="text-align:center">DSR</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">高表示MCU准备好发送/接收数据</td>
+</tr>
+</tbody>
+</table>
+<p>这还不算完，有的芯片，这些信号是高有效，有些芯片是低有效，比如CH340系列的芯片，这些信号都是低电平有效，也就是说这些描述中的拉高全部要改成拉低，高全部变成低。考虑到所有的因素，最终的表格长这样。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">信号</th>
+<th style="text-align:center">方向</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CTS</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">低表示MCU允许芯片发送从电脑接收到的串口数据</td>
+</tr>
+<tr>
+<td style="text-align:center">RTS</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">芯片向MCU发送来自电脑的串口数据前拉低</td>
+</tr>
+<tr>
+<td style="text-align:center">DCD</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">芯片不会考虑终端存在与否，所以没什么用</td>
+</tr>
+<tr>
+<td style="text-align:center">DTR</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">芯片接收到来自电脑的串口数据后拉低</td>
+</tr>
+<tr>
+<td style="text-align:center">DSR</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">低表示MCU准备好发送/接收数据</td>
+</tr>
+</tbody>
+</table>
+<p>本来以为事情到这里就结束了，结果事实上，CH340压根不考虑以上的这些因素，RTS、DTR只受电脑控制，电脑让他们拉低就拉低，与数据发送无关。所以，这些联络信号的逻辑，还是要看电脑那边怎么控制它。<br />
+整了半天，其实只是理清楚这些名词的含义，并没有什么实际的用处。</p>
+<h4 id="下载方式续"><a class="markdownIt-Anchor" href="#下载方式续"></a> 下载方式续</h4>
+<p>有了刚才那么多的铺垫，终于可以开始分析电路了。</p>
+<img src="/blog/2025/04/12/%E5%9F%BA%E4%BA%8EESP32-S3%E7%9A%84%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91%E6%9D%BF%E8%AE%BE%E8%AE%A1/image-2.png" class="" title="官方自动下载电路">
+<p>首先我们把Q13忽略，与我们的分析下载方式无关。<br />
+如果DTR为高电平，RTS为低电平，那么Q9将会导通，将EN拉低。<br />
+如果RTS为高电平，DTR为低电平，那么Q11将会导通，将IO0拉低。<br />
+如果两个都为高电平或都为低电平，那么Q9和Q11都不导通，EN和IO0维持高电平<br />
+通过这些电路，电脑可以通过程序控制DTR和RTS的电平，间接控制EN和IO0的电平，实现自动下载的效果。<br />
+这个电路的核心效果其实是把一个IO口的电平同步到另外一个IO口的电平，是为了防止DTR和RTS电平过高损坏单片机。对于CH343P之类有独立的IO口供电轨的芯片来说，可以直接把DTR连接到IO0，把RTS连接到EN，也可以实现自动下载的功能</p>
+<h3 id="音频编解码器"><a class="markdownIt-Anchor" href="#音频编解码器"></a> 音频编解码器</h3>
+<p>音频编解码器本质上是一对ADC和DAC，可以把模拟信号转换成PCM编码格式，通过I2S接口输出（编码功能），也可以把I2S传来的PCM数据转换成模拟信号进行输出（解码功能）。我们这块板子使用的是一个ES8311芯片。<br />
+ES8311的外围电路完全照抄芯片手册即可，不需要什么特别的设计。需要注意的是，ES8311需要I2S输出MCLK信号，算上DO、DI总共是五根线，可以说把I2S用到极致了。</p>
+<h3 id="音频功放"><a class="markdownIt-Anchor" href="#音频功放"></a> 音频功放</h3>
+<p>音频功放的作用是把DAC输出的音频信号进行电流放大，使其能够驱动更加大功率的喇叭，发出更大的声音。关于功放的内容足够单开一篇文章去写了。这个设计使用的是NS4160 D类音频功放，它的特点是功放效率比较高，适合与我们这种体积比较小的板子</p>
+<h3 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h3>
+<h4 id="电源"><a class="markdownIt-Anchor" href="#电源"></a> 电源</h4>
+<p>使用SY8089芯片产生3.3V电源，它的持续输出电流可以达到2A，配合一个大小合适的2.2uH电感（我用的4030的电感，其实252012应该也够）。值得一提的是，我在电源的EN引脚上增加上拉电阻和按键，可以通过按下按键断掉3.3V电源。有个缺憾是忘了在按键两端并联一个100nF电容起到消抖的作用。</p>
+<h4 id="led"><a class="markdownIt-Anchor" href="#led"></a> LED</h4>
+<p>增加三个LED，分别是5V、3.3V和用户LED。</p>
+<h2 id="pcb设计"><a class="markdownIt-Anchor" href="#pcb设计"></a> PCB设计</h2>
+<p>PCB设计没有太多值得关注的。首先这是一个开发板，需要引出尽可能多的引脚用来开发，这就要求ESP32上需要走出很多线，连接到开发板两侧的排针。在连线的时候，建议从排针出发，按照顺序拉出整齐的排线，然后根据排线的顺序，在顶层把ESP32的引脚连出一定长度，越过形成阻挡的线，打上一个过孔，这样每一根线都只需要一个过孔就可以联通，而且排线看起来比较整齐，走线的顺序通过换层实现了重排。<br />
+走完所有信号线之后，空间已经很有限了，所以中途改成了四层板，第二层做地层，第三层做电源层。电源层走了两个网络，一个是3.3V，一个是5V。</p>
+<h2 id="2025424更新-调试"><a class="markdownIt-Anchor" href="#2025424更新-调试"></a> 2025.4.24更新 调试</h2>
+<p>这块板子的调试没有遇到很多的问题，不值得单开一篇讲了。</p>
+<ol>
+<li>自动下载电路正常，程序下载很顺利。</li>
+<li>ES8311与ESP32的通信没有问题，正常输出音频信号，但是忘了引出DAC直接输出额接口，没接功放的情况下没法听效果。</li>
+<li>由于使用了CH343P高速USB转串口芯片，我想测试一下超高速的串口能不能实现。由于CH343只接到了UART0，所以只能通过系统debug信息测试。修改debug端口波特率到6Mbps，结果并不理想，烧录失败、输出乱码。修改到3Mbps，烧录和串口输出均正常。</li>
+<li>WiFi连接顺利。</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>基于ESP32-S3的音频开发板设计</p><p><a href="https://zhuwenguan.github.io/blog/2025/04/12/基于ESP32-S3的音频开发板设计/">https://zhuwenguan.github.io/blog/2025/04/12/基于ESP32-S3的音频开发板设计/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Zhu Wenguan</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2025-04-12</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2026-01-05</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/%E5%8E%9F%E7%90%86%E5%9B%BE/">原理图</a><a class="link-muted mr-2" rel="tag" href="/blog/tags/PCB/">PCB</a><a class="link-muted mr-2" rel="tag" href="/blog/tags/ESP32/">ESP32</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/2025/04/24/STM32H7%E7%94%B5%E8%B5%9B%E5%BC%80%E5%8F%91%E6%9D%BF%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">STM32H7电赛开发板硬件设计</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/2025/03/27/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%8D%95%E7%89%87%E6%9C%BA%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/"><span class="level-item">蓝桥杯单片机编程技巧</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#前言"><span class="level-left"><span class="level-item">1</span><span class="level-item"> 前言</span></span></a></li><li><a class="level is-mobile" href="#原理图设计"><span class="level-left"><span class="level-item">2</span><span class="level-item"> 原理图设计</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#esp32模组"><span class="level-left"><span class="level-item">2.1</span><span class="level-item"> ESP32模组</span></span></a></li><li><a class="level is-mobile" href="#自动下载电路"><span class="level-left"><span class="level-item">2.2</span><span class="level-item"> 自动下载电路</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#启动方式"><span class="level-left"><span class="level-item">2.2.1</span><span class="level-item"> 启动方式</span></span></a></li><li><a class="level is-mobile" href="#下载方式"><span class="level-left"><span class="level-item">2.2.2</span><span class="level-item"> 下载方式</span></span></a></li><li><a class="level is-mobile" href="#modem联络信号"><span class="level-left"><span class="level-item">2.2.3</span><span class="level-item"> Modem联络信号</span></span></a></li><li><a class="level is-mobile" href="#下载方式续"><span class="level-left"><span class="level-item">2.2.4</span><span class="level-item"> 下载方式续</span></span></a></li></ul></li><li><a class="level is-mobile" href="#音频编解码器"><span class="level-left"><span class="level-item">2.3</span><span class="level-item"> 音频编解码器</span></span></a></li><li><a class="level is-mobile" href="#音频功放"><span class="level-left"><span class="level-item">2.4</span><span class="level-item"> 音频功放</span></span></a></li><li><a class="level is-mobile" href="#其他"><span class="level-left"><span class="level-item">2.5</span><span class="level-item"> 其他</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#电源"><span class="level-left"><span class="level-item">2.5.1</span><span class="level-item"> 电源</span></span></a></li><li><a class="level is-mobile" href="#led"><span class="level-left"><span class="level-item">2.5.2</span><span class="level-item"> LED</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#pcb设计"><span class="level-left"><span class="level-item">3</span><span class="level-item"> PCB设计</span></span></a></li><li><a class="level is-mobile" href="#2025424更新-调试"><span class="level-left"><span class="level-item">4</span><span class="level-item"> 2025.4.24更新 调试</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/blog/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/Verilog/"><span class="level-start"><span class="level-item">Verilog</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E4%BB%BF%E7%9C%9F/"><span class="level-start"><span class="level-item">仿真</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/"><span class="level-start"><span class="level-item">嵌入式</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E7%A1%AC%E4%BB%B6/"><span class="level-start"><span class="level-item">硬件</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E7%BD%91%E7%BB%9C/"><span class="level-start"><span class="level-item">网络</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E8%AF%BE%E4%B8%9A/"><span class="level-start"><span class="level-item">课业</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E8%B5%9B%E8%BD%A6/"><span class="level-start"><span class="level-item">赛车</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E8%BD%AF%E4%BB%B6/"><span class="level-start"><span class="level-item">软件</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E9%A1%B9%E7%9B%AE/"><span class="level-start"><span class="level-item">项目</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-28T15:29:18.000Z">2025-12-28</time></p><p class="title"><a href="/blog/2025/12/28/STM32-TouchGFX-FMC%E9%A9%B1%E5%8A%A88080%E5%B9%B6%E5%8F%A3LCD%E5%B1%8F%E5%B9%95%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/">STM32+TouchGFX+FMC驱动8080并口LCD屏幕的那些坑</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-01T04:50:25.000Z">2025-12-01</time></p><p class="title"><a href="/blog/2025/12/01/TCS%E7%AE%97%E6%B3%95%E8%BF%AD%E4%BB%A3%E6%9B%B4%E6%96%B0/">TCS算法迭代更新</a></p><p class="categories"><a href="/blog/categories/%E8%B5%9B%E8%BD%A6/">赛车</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-17T02:15:20.000Z">2025-11-17</time></p><p class="title"><a href="/blog/2025/11/17/%E7%AD%94%E8%BE%A9%E5%87%86%E5%A4%87/">FSEC2025控制答辩</a></p><p class="categories"><a href="/blog/categories/%E8%B5%9B%E8%BD%A6/">赛车</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-10-27T02:15:20.000Z">2025-10-27</time></p><p class="title"><a href="/blog/2025/10/27/%E5%BE%AE%E6%9C%BA%E5%8E%9F%E7%90%86%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">微机原理课程笔记</a></p><p class="categories"><a href="/blog/categories/%E8%AF%BE%E4%B8%9A/">课业</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-10-15T05:24:53.000Z">2025-10-15</time></p><p class="title"><a href="/blog/2025/10/15/u8g2%20mui%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">u8g2 mui进阶使用方法</a></p><p class="categories"><a href="/blog/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></p></div></article></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Zhu&#039;s Blog Site</a><p class="is-size-7"><span>&copy; 2026 Zhu Wenguan</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdnjs.loli.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdnjs.loli.net/ajax/libs/lightgallery/1.10.0/js/lightgallery.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/katex.min.css"><script src="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/katex.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/contrib/auto-render.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/contrib/mhchem.min.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script src="https://cdnjs.loli.net/ajax/libs/pjax/0.2.8/pjax.min.js"></script><script src="/blog/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script data-pjax src="/blog/js/insight.js" defer></script><script data-pjax>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Verilog八位总线制CPU设计 - Zhu Wenguan&#039;s Blog</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Zhu Wenguan"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Zhu Wenguan"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="前言 北京市大学生集成电路设计大赛刚刚结束，这篇推文记录一下为比赛所做的准备，尤其是针对数字组第三题八位总线制CPU的前期准备和赛场发挥。"><meta property="og:type" content="blog"><meta property="og:title" content="Verilog八位总线制CPU设计"><meta property="og:url" content="https://zhuwenguan.github.io/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/"><meta property="og:site_name" content="Zhu Wenguan&#039;s Blog"><meta property="og:description" content="前言 北京市大学生集成电路设计大赛刚刚结束，这篇推文记录一下为比赛所做的准备，尤其是针对数字组第三题八位总线制CPU的前期准备和赛场发挥。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://zhuwenguan.github.io/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/image.png"><meta property="article:published_time" content="2025-06-02T07:09:44.000Z"><meta property="article:modified_time" content="2026-01-05T06:12:23.738Z"><meta property="article:author" content="Zhu Wenguan"><meta property="article:tag" content="仿真"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://zhuwenguan.github.io/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://zhuwenguan.github.io/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/"},"headline":"Verilog八位总线制CPU设计","image":["https://zhuwenguan.github.io/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/image.png"],"datePublished":"2025-06-02T07:09:44.000Z","dateModified":"2026-01-05T06:12:23.738Z","author":{"@type":"Person","name":"Zhu Wenguan"},"publisher":{"@type":"Organization","name":"Zhu Wenguan's Blog","logo":{"@type":"ImageObject","url":{"text":"Zhu's Blog Site"}}},"description":"前言 北京市大学生集成电路设计大赛刚刚结束，这篇推文记录一下为比赛所做的准备，尤其是针对数字组第三题八位总线制CPU的前期准备和赛场发挥。"}</script><link rel="canonical" href="https://zhuwenguan.github.io/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css"><link rel="stylesheet" href="https://fonts.loli.net/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.8.1/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdnjs.loli.net/ajax/libs/pace/1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Zhu&#039;s Blog Site</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">主页</a><a class="navbar-item" href="/blog/archives">归档</a><a class="navbar-item" href="/blog/categories">分类</a><a class="navbar-item" href="/blog/tags">标签</a><a class="navbar-item" href="/blog/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-06-02T07:09:44.000Z" title="6/2/2025, 3:09:44 PM">2025-06-02</time>发表</span><span class="level-item"><a class="link-muted" href="/blog/categories/Verilog/">Verilog</a></span></div></div><h1 class="title is-3 is-size-4-mobile">Verilog八位总线制CPU设计</h1><div class="content"><h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>北京市大学生集成电路设计大赛刚刚结束，这篇推文记录一下为比赛所做的准备，尤其是针对数字组第三题八位总线制CPU的前期准备和赛场发挥。</p>
+<span id="more"></span>
+<h2 id="题目描述"><a class="markdownIt-Anchor" href="#题目描述"></a> 题目描述</h2>
+<p>设计一个含通用寄存器的8位多功能总线处理器，由总线三态输入模块、寄存器控制模块、运算部分模块和控制电路模块构成。总线三态输入模块负责实现外部数据或寄存器数据向总线输送数据；寄存器控制模块负责将总线中的数据暂时存储到对应的寄存器；运算部分模块负责将暂存在A寄存器中的数据与总线中的数据，按照指定的加减法选择项进行运算并存储到G寄存器；控制电路模块则负责配合功能需求，按特定的节拍协调寄存器、运算器和总线控制所需的信号时序。</p>
+<img src="/blog/2025/06/02/Verilog%E5%85%AB%E4%BD%8D%E6%80%BB%E7%BA%BF%E5%88%B6CPU%E8%AE%BE%E8%AE%A1/image.png" class="" title="设计框图">
+<p>该通用寄存器的8位多功能总线处理器内部的R0-R3，A和G共6个寄存器，需要设计4种运算功能，分别是载数，转存，加法和减法运算。该通用寄存器的功能如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">操作</th>
+<th style="text-align:center">功能编码</th>
+<th style="text-align:center">执行的功能</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Load Rx,Data</td>
+<td style="text-align:center">00</td>
+<td style="text-align:center">Rx←Data</td>
+<td style="text-align:center">将外部数据送到指定的Rx寄存器</td>
+</tr>
+<tr>
+<td style="text-align:center">Move Rx,Ry</td>
+<td style="text-align:center">01</td>
+<td style="text-align:center">Rx←[Ry]</td>
+<td style="text-align:center">将Ry中的数据转存到Rx寄存器</td>
+</tr>
+<tr>
+<td style="text-align:center">ADD Rx,Ry</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">Rx←[Rx]+[Ry]</td>
+<td style="text-align:center">将Rx和Ry中的数据相加后送到Rx寄存器</td>
+</tr>
+<tr>
+<td style="text-align:center">SUB Rx,Ry</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">Rx←[Rx]-[Ry]</td>
+<td style="text-align:center">将Rx和Ry中的数据相减后送到Rx寄存器</td>
+</tr>
+</tbody>
+</table>
+<h2 id="总体思路"><a class="markdownIt-Anchor" href="#总体思路"></a> 总体思路</h2>
+<h3 id="总线制的含义"><a class="markdownIt-Anchor" href="#总线制的含义"></a> 总线制的含义</h3>
+<p>总线制处理器，意味着所有的数据都要通过一根总线传输，听起来好像没什么大不了的，但是实际执行起来会困难重重。例如，ALU需要两个操作数才可以进行运算，但是在总线制CPU中，所有数据都要通过总线传输，意味着ALU至少需要2个周期才可以获取到两个操作数。同理，寄存器的输入和输出也必须通过总线，导致需要预留专门的周期供寄存器写入。再者，由于总线上挂载多种设备，如果逻辑分配不当，容易使得不同设备的输出同时接入总线，形成逻辑冲突。</p>
+<h3 id="状态机设计"><a class="markdownIt-Anchor" href="#状态机设计"></a> 状态机设计</h3>
+<p>根据这些特点和困难，我们首先考虑到各个模块的运行周期，设计状态机转换逻辑。可以确定的是，ALU需要两个周期，寄存器写入需要专门的一个周期，然后由于各种标志位的变化与状态机的变化延后一个周期，所以必须设计一个IDLE状态机才能满足时序要求。那么把这些要求综合到一起，可以发现至少需要一个四状态的状态机才能实现。</p>
+<p>因此，我们设计四个状态机，分别起名为IDLE、TRANSFER、EXECUTE、WRITEBACK。他们的作用如下表</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">状态机</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">IDLE</td>
+<td style="text-align:center">对指令进行解码，输出各种标志位</td>
+</tr>
+<tr>
+<td style="text-align:center">TRANSFER</td>
+<td style="text-align:center">传输ALU所需的第一个操作数</td>
+</tr>
+<tr>
+<td style="text-align:center">EXECUTE</td>
+<td style="text-align:center">传输ALU所需的第二个操作数，并同时进行ALU运算</td>
+</tr>
+<tr>
+<td style="text-align:center">WRITEBACK</td>
+<td style="text-align:center">将ALU的运算结果写入寄存器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="总线判决机制"><a class="markdownIt-Anchor" href="#总线判决机制"></a> 总线判决机制</h3>
+<p>总线制的CPU，不同的模块必须同时挂在总线上，但是他们不能同时向总线输出数据，那样的话会导致总线上产生逻辑冲突，也就是总线的一方输出1，另一方输出0，产生冲突。因此，必须设计一个总线判决机制，使得同一时刻只有一个模块向总线输出，其他模块保持高阻态，从总线输入的模块原本就是高阻态，这样时时刻刻保持总线只有一个模块对其输出，就可以避免总线上产生逻辑冲突。<br />
+为了实现这个效果，每一个模块的输出都应该独立出来，不直接接到总线，而通过一个多路选择器（MUX）接到总线。MUX的原则就是只有一路输入接给输出，就可以保证总线只有一个模块对其输出。这部分最好在顶层模块中实现，因为顶层模块在实例化各个模块的时候，需要将他们的输出赋值给不同的wire，再将这些wire通过MUX连接给总线的wire。代码如下：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assign</span> bus =	alu_out_en ? alu_out :</span><br><span class="line">                extern_en ? Data :</span><br><span class="line">                reg_out_en[<span class="number">0</span>] ? reg_out_0 :</span><br><span class="line">                reg_out_en[<span class="number">1</span>] ? reg_out_1 :</span><br><span class="line">                reg_out_en[<span class="number">2</span>] ? reg_out_2 :</span><br><span class="line">                reg_out_en[<span class="number">3</span>] ? reg_out_3 :</span><br><span class="line">                <span class="number">8&#x27;bz</span>;</span><br></pre></td></tr></table></figure>
+<p>这里<code>bus</code>就是总线，然后总线可以连接到不同的输出，每个输出都由一个<code>en</code>信号控制，且他们具有优先级。比如说，如果<code>alu_out_en</code>为1，那么就不再考虑<code>extern_en</code>和<code>reg_out_en</code>，直接将总线接给<code>alu_out</code>。</p>
+<h2 id="控制模块设计"><a class="markdownIt-Anchor" href="#控制模块设计"></a> 控制模块设计</h2>
+<p>为了给所有的模块提供控制信号，并且执行状态机转移逻辑，我们单独设计了一个控制模块。在控制模块中，首先要读取外部输入的<code>Rx</code>，<code>Ry</code>，<code>Fun</code>等信号，并据此给出<code>alu_op</code>等信号，然后根据<code>clk</code>，改变状态机，并根据状态机来决定很多模块的控制信号。<br />
+这一块代码比较复杂，是整个CPU最大的工作量，也是最容易出错的地方。</p>
+<h3 id="状态机转移"><a class="markdownIt-Anchor" href="#状态机转移"></a> 状态机转移</h3>
+<p>先前所说，我们的状态机有四个状态，分别叫做IDLE、TRANSFER、EXECUTE、WRITEBACK。这四个状态的转移，控制着整个CPU运行的节拍。正常情况下，每一个<code>Clock</code>的上升沿，状态机都会向下一个状态转移。因此，每四个时钟周期，就可以完成一个指令的执行。这些都是我们在准备过程中，假想的。因为我们认为，总线制CPU的极限就是四个时钟周期，不可能更快了，所以按照四个时钟周期一条指令进行计算，应当是比较充分的。<br />
+事实上，比赛时，组委会给出的Testbench，并不是四个时钟周期完成一个指令，而是可变的。由于我没法拿到组委会的原题，只能凭记忆描述一下。转成汇编的话，大概是这样子的。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">LOAD</span>    <span class="built_in">R0</span>,<span class="number">0x33</span></span><br><span class="line"><span class="symbol">LOAD</span>    <span class="built_in">R1</span>,<span class="number">0x22</span></span><br><span class="line"><span class="symbol">LOAD</span>    <span class="built_in">R2</span>,<span class="number">0x11</span></span><br><span class="line"><span class="keyword">ADD</span>     <span class="built_in">R0</span>,<span class="built_in">R1</span></span><br><span class="line"><span class="symbol">MOVE</span>    <span class="built_in">R3</span>,<span class="built_in">R0</span></span><br><span class="line"><span class="keyword">SUB</span>     <span class="built_in">R1</span>,<span class="built_in">R2</span></span><br></pre></td></tr></table></figure>
+<p>Testbench中，最开始是三个<code>LOAD</code>指令，但是每两条指令之间只间隔了两个时钟周期。也就是说，6个时钟周期要完成3条指令。这与我们准备的完全不符了，而且最开始我们认为完全无法实现。赛场上碰到这个问题的时候，我们也是一脸懵，因为ALU至少需要两个时钟周期才能读取两个操作数，怎么可能两个周期就能执行完呢？<br />
+但是，除了<code>LOAD</code>指令，其他的指令给的执行时间都很长，起码5、6个周期。按照4T的执行周期是能够完成的。整个执行过程，最耗时间的，其实就是ALU。这时候我们想到，其实<code>LOAD</code>指令根本不需要ALU，从总线读取，直接写入寄存器即可。那么，<code>LOAD</code>指令可以直接省去ALU转移数据所需要的两个时钟周期。所以，赛场上，我们最终的解决方案，是给LOAD指令设立特殊的转移流程，从IDLE直接转成IDLE，算上寄存器延时的一个周期，也就是两个时钟周期就可以完成。其他指令仍然四个时钟周期执行完。</p>
+<h3 id="控制信号"><a class="markdownIt-Anchor" href="#控制信号"></a> 控制信号</h3>
+<p>控制信号主要包括：外部输入控制、ALU输出控制、寄存器输出控制、ALU第一个操作数使能。这些控制信号都是根据操作码、操作数和状态机的组合逻辑产生的，只要穷举所有可能性就可以。因为可能性实在太多，所以代码很冗长，这里推荐大家先大致写一个逻辑，然后上Testbench跑，出现问题之后，定位出是哪个情况写错了/没考虑，然后再修改代码。这样得到的代码虽然比较屎山，但是对于竞赛来说，是一个又快又好的办法。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>这次的集电赛题跟我们赛前准备的内容非常相似，可以说准备到原题了，在这里记录下整个备赛的过程，既做留念，也留给后人学习。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Verilog八位总线制CPU设计</p><p><a href="https://zhuwenguan.github.io/blog/2025/06/02/Verilog八位总线制CPU设计/">https://zhuwenguan.github.io/blog/2025/06/02/Verilog八位总线制CPU设计/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Zhu Wenguan</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2025-06-02</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2026-01-05</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/%E4%BB%BF%E7%9C%9F/">仿真</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/2025/06/07/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%A4%8D%E4%B9%A0%E8%B5%84%E6%96%99/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">信号与系统复习资料</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/2025/05/07/MAX30100%E5%BF%83%E7%8E%87%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95/"><span class="level-item">MAX30100心率检测算法</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#前言"><span class="level-left"><span class="level-item">1</span><span class="level-item"> 前言</span></span></a></li><li><a class="level is-mobile" href="#题目描述"><span class="level-left"><span class="level-item">2</span><span class="level-item"> 题目描述</span></span></a></li><li><a class="level is-mobile" href="#总体思路"><span class="level-left"><span class="level-item">3</span><span class="level-item"> 总体思路</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#总线制的含义"><span class="level-left"><span class="level-item">3.1</span><span class="level-item"> 总线制的含义</span></span></a></li><li><a class="level is-mobile" href="#状态机设计"><span class="level-left"><span class="level-item">3.2</span><span class="level-item"> 状态机设计</span></span></a></li><li><a class="level is-mobile" href="#总线判决机制"><span class="level-left"><span class="level-item">3.3</span><span class="level-item"> 总线判决机制</span></span></a></li></ul></li><li><a class="level is-mobile" href="#控制模块设计"><span class="level-left"><span class="level-item">4</span><span class="level-item"> 控制模块设计</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#状态机转移"><span class="level-left"><span class="level-item">4.1</span><span class="level-item"> 状态机转移</span></span></a></li><li><a class="level is-mobile" href="#控制信号"><span class="level-left"><span class="level-item">4.2</span><span class="level-item"> 控制信号</span></span></a></li></ul></li><li><a class="level is-mobile" href="#总结"><span class="level-left"><span class="level-item">5</span><span class="level-item"> 总结</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/blog/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/Verilog/"><span class="level-start"><span class="level-item">Verilog</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E4%BB%BF%E7%9C%9F/"><span class="level-start"><span class="level-item">仿真</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/"><span class="level-start"><span class="level-item">嵌入式</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E7%A1%AC%E4%BB%B6/"><span class="level-start"><span class="level-item">硬件</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E7%BD%91%E7%BB%9C/"><span class="level-start"><span class="level-item">网络</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E8%AF%BE%E4%B8%9A/"><span class="level-start"><span class="level-item">课业</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E8%B5%9B%E8%BD%A6/"><span class="level-start"><span class="level-item">赛车</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E8%BD%AF%E4%BB%B6/"><span class="level-start"><span class="level-item">软件</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/%E9%A1%B9%E7%9B%AE/"><span class="level-start"><span class="level-item">项目</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-28T15:29:18.000Z">2025-12-28</time></p><p class="title"><a href="/blog/2025/12/28/STM32-TouchGFX-FMC%E9%A9%B1%E5%8A%A88080%E5%B9%B6%E5%8F%A3LCD%E5%B1%8F%E5%B9%95%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/">STM32+TouchGFX+FMC驱动8080并口LCD屏幕的那些坑</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-01T04:50:25.000Z">2025-12-01</time></p><p class="title"><a href="/blog/2025/12/01/TCS%E7%AE%97%E6%B3%95%E8%BF%AD%E4%BB%A3%E6%9B%B4%E6%96%B0/">TCS算法迭代更新</a></p><p class="categories"><a href="/blog/categories/%E8%B5%9B%E8%BD%A6/">赛车</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-17T02:15:20.000Z">2025-11-17</time></p><p class="title"><a href="/blog/2025/11/17/%E7%AD%94%E8%BE%A9%E5%87%86%E5%A4%87/">FSEC2025控制答辩</a></p><p class="categories"><a href="/blog/categories/%E8%B5%9B%E8%BD%A6/">赛车</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-10-27T02:15:20.000Z">2025-10-27</time></p><p class="title"><a href="/blog/2025/10/27/%E5%BE%AE%E6%9C%BA%E5%8E%9F%E7%90%86%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">微机原理课程笔记</a></p><p class="categories"><a href="/blog/categories/%E8%AF%BE%E4%B8%9A/">课业</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-10-15T05:24:53.000Z">2025-10-15</time></p><p class="title"><a href="/blog/2025/10/15/u8g2%20mui%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">u8g2 mui进阶使用方法</a></p><p class="categories"><a href="/blog/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></p></div></article></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Zhu&#039;s Blog Site</a><p class="is-size-7"><span>&copy; 2026 Zhu Wenguan</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdnjs.loli.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script><script src="https://cdnjs.loli.net/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdnjs.loli.net/ajax/libs/lightgallery/1.10.0/js/lightgallery.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/katex.min.css"><script src="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/katex.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/contrib/auto-render.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/KaTeX/0.15.1/contrib/mhchem.min.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script src="https://cdnjs.loli.net/ajax/libs/pjax/0.2.8/pjax.min.js"></script><script src="/blog/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script data-pjax src="/blog/js/insight.js" defer></script><script data-pjax>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
